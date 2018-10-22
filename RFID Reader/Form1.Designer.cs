@@ -71,7 +71,6 @@
             // 
             // button_hardReset
             // 
-            this.button_hardReset.Enabled = false;
             this.button_hardReset.Location = new System.Drawing.Point(12, 339);
             this.button_hardReset.Name = "button_hardReset";
             this.button_hardReset.Size = new System.Drawing.Size(151, 28);

@@ -741,11 +741,11 @@ namespace RFID_Reader
             // set timeout to 50 ms
 
             int i = 0;
-            //const int timeout = 100;// create timer for timeout (just in case)
-            //DateTime start = DateTime.Now;
-            //while (DateTime.Now.Subtract(start).TotalMilliseconds < timeout)
-            i = 3000;
-            while (i > 1)
+            const int timeout = 100;// create timer for timeout (just in case)
+            DateTime start = DateTime.Now;
+            while (DateTime.Now.Subtract(start).TotalMilliseconds < timeout)
+            //i = 2000;
+            //while (i >= 1)
             {
                 byte n = PCD_ReadRegister((byte)PCD_Register.ComIrqReg);   // ComIrqReg[7..0] bits are: Set1 TxIRq RxIRq IdleIRq HiAlertIRq LoAlertIRq ErrIRq TimerIRq
                 if ((n & waitIRq) != 0)
@@ -757,7 +757,7 @@ namespace RFID_Reader
                 {                       // Timer interrupt - nothing received in 25ms
                     return StatusCode.STATUS_TIMEOUT;
                 }
-                i--;
+                //i--;
 
             } // 35.7ms and nothing happend. Communication with the MFRC522 might be down.
             if (i == 0)

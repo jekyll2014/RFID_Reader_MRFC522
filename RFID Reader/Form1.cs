@@ -9,8 +9,8 @@ namespace RFID_Reader
     public partial class Form1 : Form
     {
         private List<byte> cardData = new List<byte>();
-        private int _codePage = RFID_Reader_extended.Properties.Settings.Default.CodePage;
-        private int _tmr_delay = RFID_Reader_extended.Properties.Settings.Default.RefreshTimeout;
+        private int _codePage = RFID_Reader_MRFC522.Properties.Settings.Default.CodePage;
+        private int _tmr_delay = RFID_Reader_MRFC522.Properties.Settings.Default.RefreshTimeout;
 
         public static System.Timers.Timer _aTimer;
         public MFRC522 reader = new MFRC522();
@@ -20,7 +20,7 @@ namespace RFID_Reader
         private byte _pageSize = 16;
         private byte[] _defaultKeyA = new byte[] { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
         private byte[] _defaultKeyB = null;
-        private static Semaphore mutexObj = new Semaphore(0,100);
+        private static Semaphore mutexObj = new Semaphore(0, 100);
 
         public Form1()
         {
@@ -180,7 +180,7 @@ namespace RFID_Reader
                             data.Add(null);
                         }
                     }
-                    else
+                    else if (t == MFRC522.PICC_Type.PICC_TYPE_MIFARE_UL)
                     {
                         byte[] buffer = new byte[18];
                         byte byteCount = (byte)buffer.Length;
@@ -226,7 +226,7 @@ namespace RFID_Reader
 
                 MFRC522.StatusCode status = new MFRC522.StatusCode();
                 MFRC522.PICC_Type t = reader.PICC_GetType(reader.uid.sak);
-                if (t != MFRC522.PICC_Type.PICC_TYPE_MIFARE_UL)
+                if (t == MFRC522.PICC_Type.PICC_TYPE_MIFARE_1K || t == MFRC522.PICC_Type.PICC_TYPE_MIFARE_4K || t == MFRC522.PICC_Type.PICC_TYPE_MIFARE_1K)
                 {
                     // Authenticate
                     if (keyA != null) status = reader.PCD_Authenticate((byte)MFRC522.PICC_Command.PICC_CMD_MF_AUTH_KEY_A, sector, keyA, reader.uid);
@@ -243,9 +243,9 @@ namespace RFID_Reader
                     }
                     reader.PCD_StopCrypto1();
                 }
-                else
+                else if (t == MFRC522.PICC_Type.PICC_TYPE_MIFARE_UL)
                 {
-                    byte[] PSWBuff = new byte[4] { 0xff, 0xff, 0xff, 0xff };
+                    /*byte[] PSWBuff = new byte[4] { 0xff, 0xff, 0xff, 0xff };
                     byte[] pACK = new byte[2];
                     status = reader.PCD_NTAG216_AUTH(PSWBuff, out pACK);
                     if (status == MFRC522.StatusCode.STATUS_OK)
@@ -253,9 +253,10 @@ namespace RFID_Reader
                         for (int i = 0; i < 4; i++)
                         {
                             byte[] tmp = new byte[4] { data[0 + i * 4], data[1 + i * 4], data[2 + i * 4], data[3 + i * 4] };
-                            status = reader.MIFARE_Ultralight_Write(sector, tmp, (byte)tmp.Length);
+                            status = reader.MIFARE_Ultralight_Write((byte)(sector * 4 + i), tmp, (byte)tmp.Length);
                         }
-                    }
+                    }*/
+                    MessageBox.Show("Can only write to MIFARE CLASSIC MINI/1K/4K");
                 }
                 return (status == MFRC522.StatusCode.STATUS_OK);
             }
