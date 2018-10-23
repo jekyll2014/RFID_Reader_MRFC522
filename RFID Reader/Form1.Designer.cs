@@ -183,7 +183,6 @@
             this.checkBox_keyHex.AutoSize = true;
             this.checkBox_keyHex.Checked = true;
             this.checkBox_keyHex.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox_keyHex.Enabled = false;
             this.checkBox_keyHex.Location = new System.Drawing.Point(279, 155);
             this.checkBox_keyHex.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.checkBox_keyHex.Name = "checkBox_keyHex";
@@ -387,7 +386,6 @@
             this.checkBox_tagHex.AutoSize = true;
             this.checkBox_tagHex.Checked = true;
             this.checkBox_tagHex.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox_tagHex.Enabled = false;
             this.checkBox_tagHex.Location = new System.Drawing.Point(508, 155);
             this.checkBox_tagHex.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.checkBox_tagHex.Name = "checkBox_tagHex";
