@@ -20,7 +20,7 @@ namespace RFID_Reader
         private byte _pageSize = 16;
         private byte[] _defaultKeyA = new byte[] { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
         private byte[] _defaultKeyB = null;
-        private static Semaphore mutexObj = new Semaphore(0, 100);
+        private static Semaphore mutexObj = new Semaphore(0, 1);
 
         public Form1()
         {
