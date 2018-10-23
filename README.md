@@ -9,3 +9,9 @@ Thanks a lot for a great job!
 
 How to change RC522 from SPI to UART:
 https://github.com/jekyll2014/RFID_Reader_MRFC522/blob/master/rfid_docs/MRFC522-RC522-UART-RFID.jpg
+or
+https://github.com/mfdogalindo/MFRC522-UART
+or
+https://igor-kochet.livejournal.com/267758.html
+
+Connecting pin32 to GND is not necessary but better to do.
