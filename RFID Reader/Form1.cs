@@ -44,7 +44,6 @@ namespace RFID_Reader
                 label_tagFound.BackColor = Color.Yellow;
                 label_tagFound.Text = "Looking for tag";
             });
-            //reader.uid = new MFRC522.Uid();
             byte[] uid_new = RFID_hunt();
 
             // No tag
@@ -149,7 +148,8 @@ namespace RFID_Reader
                         {
                             keyB = new byte[] { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
                         }
-
+                        byte[] tmp_uid = RFID_hunt();
+                        if (!Accessory.ByteArrayCompare(tmp_uid, uid)) data.Add(null);
                         // Authenticate
                         if (keyA != null) status = reader.PCD_Authenticate((byte)MFRC522.PICC_Command.PICC_CMD_MF_AUTH_KEY_A, sector, keyA, reader.uid);
                         if (keyB != null) status = reader.PCD_Authenticate((byte)MFRC522.PICC_Command.PICC_CMD_MF_AUTH_KEY_B, sector, keyB, reader.uid);
@@ -179,6 +179,7 @@ namespace RFID_Reader
                         {
                             data.Add(null);
                         }
+                        reader.PCD_StopCrypto1();
                     }
                     else if (t == MFRC522.PICC_Type.PICC_TYPE_MIFARE_UL)
                     {
@@ -202,7 +203,6 @@ namespace RFID_Reader
                         sectorUL += 4;
                     }
                 }
-                reader.PCD_StopCrypto1();
                 return data;
             }
             return null;
