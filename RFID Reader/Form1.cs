@@ -303,6 +303,7 @@ namespace RFID_Reader
                     comboBox_speed.Enabled = false;
                     button_refersh.Enabled = false;
                     _aTimer.Enabled = true;
+                    this.Refresh();
                 }
             }
             else
@@ -310,10 +311,8 @@ namespace RFID_Reader
                 _aTimer.Enabled = false;
                 //Accessory.Delay_ms(_tmr_delay + 100);
                 button_start.Text = "Start reading";
-
                 label_tagFound.BackColor = Color.Gray;
                 label_tagFound.Text = "";
-
                 reader.Close();
                 button_read.Enabled = false;
                 button_write.Enabled = false;
@@ -335,6 +334,7 @@ namespace RFID_Reader
             {
                 label_tagFound.BackColor = Color.Yellow;
                 label_tagFound.Text = "Reading tag";
+                this.Refresh();
             });
             checkBox_tagHex.Checked = true;
 
@@ -353,10 +353,11 @@ namespace RFID_Reader
             byte[] uid = RFID_hunt();
             if (uid != null)
             {
-                data = RFID_read(uid, _defaultKeyA, _defaultKeyB, 0, 8);
-                if (data.Count == 9)
+                byte num = 8;
+                data = RFID_read(uid, _defaultKeyA, _defaultKeyB, 0, (byte)(num - 1));
+                if (data.Count == num)
                 {
-                    for (byte i = 0; i <= 8; i++)
+                    for (byte i = 0; i < num; i++)
                     {
                         Control[] controls = Controls.Find("textBox_tagEdit" + i.ToString(), true);
                         if (controls.Length > 0)
@@ -395,6 +396,7 @@ namespace RFID_Reader
             {
                 label_tagFound.BackColor = Color.Yellow;
                 label_tagFound.Text = "Writing tag";
+                this.Refresh();
             });
             checkBox_tagHex.Checked = true;
 
@@ -450,7 +452,6 @@ namespace RFID_Reader
                 textBox_tagEdit5.Text = Accessory.ConvertStringToHex(textBox_tagEdit5.Text);
                 textBox_tagEdit6.Text = Accessory.ConvertStringToHex(textBox_tagEdit6.Text);
                 textBox_tagEdit7.Text = Accessory.ConvertStringToHex(textBox_tagEdit7.Text);
-                textBox_tagEdit8.Text = Accessory.ConvertStringToHex(textBox_tagEdit8.Text);
             }
             else
             {
@@ -461,7 +462,6 @@ namespace RFID_Reader
                 textBox_tagEdit5.Text = Accessory.ConvertHexToString(textBox_tagEdit5.Text);
                 textBox_tagEdit6.Text = Accessory.ConvertHexToString(textBox_tagEdit6.Text);
                 textBox_tagEdit7.Text = Accessory.ConvertHexToString(textBox_tagEdit7.Text);
-                textBox_tagEdit8.Text = Accessory.ConvertHexToString(textBox_tagEdit8.Text);
             }
             textBox_tagEdit1_Leave(this, EventArgs.Empty);
             textBox_tagEdit2_Leave(this, EventArgs.Empty);
@@ -470,7 +470,6 @@ namespace RFID_Reader
             textBox_tagEdit5_Leave(this, EventArgs.Empty);
             textBox_tagEdit6_Leave(this, EventArgs.Empty);
             textBox_tagEdit7_Leave(this, EventArgs.Empty);
-            textBox_tagEdit8_Leave(this, EventArgs.Empty);
         }
 
         private void textBox_tagEdit1_Leave(object sender, EventArgs e)
@@ -592,23 +591,6 @@ namespace RFID_Reader
             else textBox_tagEdit7.Text = Accessory.ConvertHexToString(Accessory.ConvertByteArrayToHex(outp));
         }
 
-        private void textBox_tagEdit8_Leave(object sender, EventArgs e)
-        {
-            string tmpStr = "";
-            if (!checkBox_tagHex.Checked) tmpStr = Accessory.ConvertStringToHex(textBox_tagEdit8.Text);
-            else tmpStr = Accessory.CheckHexString(textBox_tagEdit8.Text);
-
-            byte[] tmp = Accessory.ConvertHexToByteArray(tmpStr);
-            byte[] outp = new byte[_pageSize];
-            for (int i = 0; i < outp.Length; i++) outp[i] = 0xff;
-            if (tmp.Length < _pageSize) Array.Copy(tmp, outp, tmp.Length);
-            else if (tmp.Length > _pageSize) Array.Copy(tmp, outp, _pageSize);
-            else outp = tmp;
-
-            if (checkBox_tagHex.Checked) textBox_tagEdit8.Text = Accessory.ConvertByteArrayToHex(outp);
-            else textBox_tagEdit8.Text = Accessory.ConvertHexToString(Accessory.ConvertByteArrayToHex(outp));
-        }
-
         private void textBox_keyA_Leave(object sender, EventArgs e)
         {
             string tmpStr = "";
@@ -705,19 +687,5 @@ namespace RFID_Reader
             textBox_tagEdit7.Enabled = checkBox_page7.Checked;
         }
 
-        private void checkBox_page8_CheckedChanged(object sender, EventArgs e)
-        {
-            textBox_tagEdit8.Enabled = checkBox_page8.Checked;
-        }
-
-        private void textBox_tagEdit0_Leave(object sender, EventArgs e)
-        {
-
-        }
-
-        private void checkBox_page0_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
     }
 }

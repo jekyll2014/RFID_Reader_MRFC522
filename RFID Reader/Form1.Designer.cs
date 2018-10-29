@@ -45,7 +45,6 @@
             this.textBox_tagType = new System.Windows.Forms.TextBox();
             this.label_tagType = new System.Windows.Forms.Label();
             this.label_tagFound = new System.Windows.Forms.Label();
-            this.checkBox_page8 = new System.Windows.Forms.CheckBox();
             this.checkBox_page7 = new System.Windows.Forms.CheckBox();
             this.checkBox_page6 = new System.Windows.Forms.CheckBox();
             this.checkBox_page5 = new System.Windows.Forms.CheckBox();
@@ -54,7 +53,6 @@
             this.checkBox_page2 = new System.Windows.Forms.CheckBox();
             this.checkBox_page1 = new System.Windows.Forms.CheckBox();
             this.checkBox_tagHex = new System.Windows.Forms.CheckBox();
-            this.textBox_tagEdit8 = new System.Windows.Forms.TextBox();
             this.textBox_tagEdit7 = new System.Windows.Forms.TextBox();
             this.textBox_tagEdit6 = new System.Windows.Forms.TextBox();
             this.textBox_tagEdit5 = new System.Windows.Forms.TextBox();
@@ -275,19 +273,6 @@
             this.label_tagFound.Text = "Tag not found";
             this.label_tagFound.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // checkBox_page8
-            // 
-            this.checkBox_page8.AutoSize = true;
-            this.checkBox_page8.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.checkBox_page8.Location = new System.Drawing.Point(175, 477);
-            this.checkBox_page8.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.checkBox_page8.Name = "checkBox_page8";
-            this.checkBox_page8.Size = new System.Drawing.Size(83, 24);
-            this.checkBox_page8.TabIndex = 38;
-            this.checkBox_page8.Text = "Page08";
-            this.checkBox_page8.UseVisualStyleBackColor = true;
-            this.checkBox_page8.CheckedChanged += new System.EventHandler(this.checkBox_page8_CheckedChanged);
-            // 
             // checkBox_page7
             // 
             this.checkBox_page7.AutoSize = true;
@@ -395,19 +380,6 @@
             this.checkBox_tagHex.UseVisualStyleBackColor = true;
             this.checkBox_tagHex.CheckedChanged += new System.EventHandler(this.checkBox_tagHex2_CheckedChanged);
             // 
-            // textBox_tagEdit8
-            // 
-            this.textBox_tagEdit8.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox_tagEdit8.Enabled = false;
-            this.textBox_tagEdit8.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox_tagEdit8.Location = new System.Drawing.Point(279, 477);
-            this.textBox_tagEdit8.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.textBox_tagEdit8.Name = "textBox_tagEdit8";
-            this.textBox_tagEdit8.Size = new System.Drawing.Size(830, 21);
-            this.textBox_tagEdit8.TabIndex = 29;
-            this.textBox_tagEdit8.Leave += new System.EventHandler(this.textBox_tagEdit8_Leave);
-            // 
             // textBox_tagEdit7
             // 
             this.textBox_tagEdit7.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -512,7 +484,6 @@
             this.textBox_tagEdit0.ReadOnly = true;
             this.textBox_tagEdit0.Size = new System.Drawing.Size(830, 21);
             this.textBox_tagEdit0.TabIndex = 22;
-            this.textBox_tagEdit0.Leave += new System.EventHandler(this.textBox_tagEdit0_Leave);
             // 
             // button_read
             // 
@@ -558,14 +529,13 @@
             this.checkBox_page0.TabIndex = 32;
             this.checkBox_page0.Text = "Page00";
             this.checkBox_page0.UseVisualStyleBackColor = true;
-            this.checkBox_page0.CheckedChanged += new System.EventHandler(this.checkBox_page0_CheckedChanged);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.ClientSize = new System.Drawing.Size(1116, 594);
+            this.ClientSize = new System.Drawing.Size(1116, 481);
             this.Controls.Add(this.button_read);
             this.Controls.Add(this.button_write);
             this.Controls.Add(this.label_tagFound);
@@ -580,7 +550,6 @@
             this.Controls.Add(this.checkBox_authA);
             this.Controls.Add(this.checkBox_authB);
             this.Controls.Add(this.button_start);
-            this.Controls.Add(this.checkBox_page8);
             this.Controls.Add(this.comboBox_portName);
             this.Controls.Add(this.checkBox_page7);
             this.Controls.Add(this.label1);
@@ -599,7 +568,6 @@
             this.Controls.Add(this.textBox_tagEdit1);
             this.Controls.Add(this.checkBox_tagHex);
             this.Controls.Add(this.textBox_tagEdit2);
-            this.Controls.Add(this.textBox_tagEdit8);
             this.Controls.Add(this.textBox_tagEdit3);
             this.Controls.Add(this.textBox_tagEdit7);
             this.Controls.Add(this.textBox_tagEdit4);
@@ -635,7 +603,6 @@
         private System.Windows.Forms.Button button_read;
         private System.Windows.Forms.Button button_write;
         private System.Windows.Forms.Button button_clear;
-        private System.Windows.Forms.CheckBox checkBox_page8;
         private System.Windows.Forms.CheckBox checkBox_page7;
         private System.Windows.Forms.CheckBox checkBox_page6;
         private System.Windows.Forms.CheckBox checkBox_page5;
@@ -644,7 +611,6 @@
         private System.Windows.Forms.CheckBox checkBox_page2;
         private System.Windows.Forms.CheckBox checkBox_page1;
         private System.Windows.Forms.CheckBox checkBox_tagHex;
-        private System.Windows.Forms.TextBox textBox_tagEdit8;
         private System.Windows.Forms.TextBox textBox_tagEdit7;
         private System.Windows.Forms.TextBox textBox_tagEdit6;
         private System.Windows.Forms.TextBox textBox_tagEdit5;
