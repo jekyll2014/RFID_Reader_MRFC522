@@ -135,7 +135,7 @@ namespace RFID_Reader
                 {
                     MFRC522.StatusCode status = new MFRC522.StatusCode();
                     MFRC522.PICC_Type t = reader.PICC_GetType(reader.uid.sak);
-                    if (t == MFRC522.PICC_Type.PICC_TYPE_MIFARE_1K || t == MFRC522.PICC_Type.PICC_TYPE_MIFARE_4K || t == MFRC522.PICC_Type.PICC_TYPE_MIFARE_1K)
+                    if (t == MFRC522.PICC_Type.PICC_TYPE_MIFARE_MINI || t == MFRC522.PICC_Type.PICC_TYPE_MIFARE_1K || t == MFRC522.PICC_Type.PICC_TYPE_MIFARE_4K)
                     {
                         // This is the default key for authentication
                         byte[] key = new byte[] { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
@@ -226,7 +226,7 @@ namespace RFID_Reader
 
                 MFRC522.StatusCode status = new MFRC522.StatusCode();
                 MFRC522.PICC_Type t = reader.PICC_GetType(reader.uid.sak);
-                if (t == MFRC522.PICC_Type.PICC_TYPE_MIFARE_1K || t == MFRC522.PICC_Type.PICC_TYPE_MIFARE_4K || t == MFRC522.PICC_Type.PICC_TYPE_MIFARE_1K)
+                if (t == MFRC522.PICC_Type.PICC_TYPE_MIFARE_MINI || t == MFRC522.PICC_Type.PICC_TYPE_MIFARE_1K || t == MFRC522.PICC_Type.PICC_TYPE_MIFARE_4K)
                 {
                     // Authenticate
                     if (keyA != null) status = reader.PCD_Authenticate((byte)MFRC522.PICC_Command.PICC_CMD_MF_AUTH_KEY_A, sector, keyA, reader.uid);
@@ -414,7 +414,7 @@ namespace RFID_Reader
                         {
                             TextBox tBox = controls[0] as TextBox;
                             byte[] data = Accessory.ConvertHexToByteArray(tBox.Text);
-                            if (data != null && data.Length == 16)
+                            if (data.Length == 16)
                             {
                                 byte[] uid = null;
                                 uid = RFID_hunt();
