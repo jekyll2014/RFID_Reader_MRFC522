@@ -8,7 +8,7 @@ namespace RFID_Reader
 {
     public partial class Form1 : Form
     {
-        private List<byte> cardData = new List<byte>();
+        private List<byte[]> cardData = new List<byte[]>();
         private int _codePage = RFID_Reader_MRFC522.Properties.Settings.Default.CodePage;
         private int _tmr_delay = RFID_Reader_MRFC522.Properties.Settings.Default.RefreshTimeout;
 
@@ -354,7 +354,7 @@ namespace RFID_Reader
                 label_tagFound.Text = "Reading tag";
                 this.Refresh();
             });
-            checkBox_tagHex.Checked = true;
+            checkBox_dataHex.Checked = true;
 
             byte[] uid = RFID_hunt();
             MFRC522.PICC_Type t = reader.PICC_GetType(reader.uid.sak);
@@ -366,7 +366,7 @@ namespace RFID_Reader
                     pageNum = 48;
                     List<byte[]> data = new List<byte[]>();
                     data = RFID_read(uid, null, null, 0, (byte)(pageNum - 1));
-
+                    cardData.AddRange(data);
                     dataGridView_data.Rows.Clear();
                     dataGridView_data.Columns.Clear();
                     dataGridView_data.Columns.Add("num", "#");
@@ -385,8 +385,12 @@ namespace RFID_Reader
                     {
                         dataGridView_data.Rows.Add();
                         dataGridView_data.Rows[dataGridView_data.Rows.Count - 1].Cells[0].Value = i.ToString("D3");
+                        dataGridView_data.Rows[dataGridView_data.Rows.Count - 1].Cells[0].ReadOnly = true;
+                        dataGridView_data.Rows[dataGridView_data.Rows.Count - 1].Cells[1].Value = false;
                         dataGridView_data.Rows[dataGridView_data.Rows.Count - 1].Cells[2].Value = Accessory.ConvertByteArrayToHex(d);
+                        dataGridView_data.Rows[dataGridView_data.Rows.Count - 1].Cells[2].ReadOnly = true;
                         i++;
+                        this.Refresh();
                     }
                 }
                 else if (t == MFRC522.PICC_Type.PICC_TYPE_MIFARE_MINI || t == MFRC522.PICC_Type.PICC_TYPE_MIFARE_1K || t == MFRC522.PICC_Type.PICC_TYPE_MIFARE_4K || t == MFRC522.PICC_Type.PICC_TYPE_MIFARE_PLUS)
@@ -401,6 +405,7 @@ namespace RFID_Reader
                     checkCol.HeaderText = "Writable";
                     dataGridView_data.Columns.Add(checkCol);
                     dataGridView_data.Columns[1].SortMode = DataGridViewColumnSortMode.NotSortable;
+
 
                     dataGridView_data.Columns.Add("data", "Card data");
                     dataGridView_data.Columns[2].SortMode = DataGridViewColumnSortMode.NotSortable;
@@ -419,7 +424,16 @@ namespace RFID_Reader
                     if (checkBox_authA.Checked && !checkBox_authB.Checked) useKeys = new byte[][] { _defaultKeyA };
                     else if (!checkBox_authA.Checked && checkBox_authB.Checked) useKeys = new byte[][] { _defaultKeyB };
                     else if (checkBox_authA.Checked && checkBox_authB.Checked) useKeys = useKeys = new byte[][] { _defaultKeyA, _defaultKeyB };
-                    else if (!checkBox_authA.Checked && !checkBox_authB.Checked) useKeys = _defaultKeys;
+                    else if (!checkBox_authA.Checked && !checkBox_authB.Checked)
+                    {
+                        useKeys = _defaultKeys;
+                        this.Invoke((MethodInvoker)delegate
+                        {
+                            label_tagFound.BackColor = Color.Yellow;
+                            label_tagFound.Text = "Reading tag\r\nTrying default keys...";
+                            this.Refresh();
+                        });
+                    }
                     for (byte b = 0; b < pageNum; b++)
                     {
                         int k = 0;
@@ -436,16 +450,22 @@ namespace RFID_Reader
                                 k = 0;
                             }
                         } while (data[0] == null && k < useKeys.Length);
-
+                        cardData.AddRange(data);
                         dataGridView_data.Rows.Add();
                         dataGridView_data.Rows[dataGridView_data.Rows.Count - 1].Cells[0].Value = b.ToString("D3");
+                        dataGridView_data.Rows[dataGridView_data.Rows.Count - 1].Cells[0].ReadOnly = true;
+                        dataGridView_data.Rows[dataGridView_data.Rows.Count - 1].Cells[1].Value = false;
                         dataGridView_data.Rows[dataGridView_data.Rows.Count - 1].Cells[2].Value = Accessory.ConvertByteArrayToHex(data[0]);
+                        dataGridView_data.Rows[dataGridView_data.Rows.Count - 1].Cells[2].ReadOnly = true;
+                        dataGridView_data.Rows[dataGridView_data.Rows.Count - 1].Cells[3].ReadOnly = true;
+                        dataGridView_data.Rows[dataGridView_data.Rows.Count - 1].Cells[4].ReadOnly = true;
                         if (data[0] != null)
                         {
                             if (stage) dataGridView_data.Rows[dataGridView_data.Rows.Count - 1].Cells[4].Value = Accessory.ConvertByteArrayToHex(useKeys[k - 1]);
                             else dataGridView_data.Rows[dataGridView_data.Rows.Count - 1].Cells[3].Value = Accessory.ConvertByteArrayToHex(useKeys[k - 1]);
                             raiseKey(ref useKeys, k - 1);
                         }
+                        this.Refresh();
                     }
                 }
             }
@@ -476,11 +496,23 @@ namespace RFID_Reader
                 label_tagFound.Text = "Writing tag";
                 this.Refresh();
             });
-            checkBox_tagHex.Checked = true;
+            checkBox_dataHex.Checked = true;
 
-            for (byte i = 1; i <= 8; i++)
+            for (byte i = 0; i < dataGridView_data.Rows.Count; i++)
             {
-                Control[] controls = Controls.Find("checkBox_page" + i.ToString(), true);
+                if (dataGridView_data.Rows[i].Cells[1].Value != null && (bool)dataGridView_data.Rows[i].Cells[1].Value == true)
+                {
+                    byte[] uid = null;
+                    uid = RFID_hunt();
+                    if (uid != null)
+                    {
+                        bool status = RFID_write(uid, _defaultKeyA, _defaultKeyB, i, cardData[i]);
+                        if (status) dataGridView_data.Rows[i].Cells[2].Style.BackColor = Color.Lime;
+                        else dataGridView_data.Rows[i].Cells[2].Style.BackColor = Color.Red;
+                    }
+                    else dataGridView_data.Rows[i].Cells[2].Style.BackColor = Color.Red;
+                }
+                /*Control[] controls = Controls.Find("checkBox_page" + i.ToString(), true);
                 if (controls.Length > 0)
                 {
                     CheckBox cBox = controls[0] as CheckBox;
@@ -507,7 +539,7 @@ namespace RFID_Reader
                             else tBox.BackColor = Color.Red;
                         }
                     }
-                }
+                }*/
             }
             this.Invoke((MethodInvoker)delegate
             {
@@ -517,35 +549,6 @@ namespace RFID_Reader
 
             _aTimer.Enabled = true;
             mutexObj.Release();
-        }
-
-        private void checkBox_tagHex2_CheckedChanged(object sender, EventArgs e)
-        {
-            /*if (checkBox_tagHex.Checked)
-            {
-                textBox_tagEdit1.Text = Accessory.ConvertStringToHex(textBox_tagEdit1.Text);
-            }
-            else
-            {
-                textBox_tagEdit1.Text = Accessory.ConvertHexToString(textBox_tagEdit1.Text);
-            }
-        }
-
-        private void textBox_tagEdit1_Leave(object sender, EventArgs e)
-        {
-            /*string tmpStr = "";
-            if (!checkBox_tagHex.Checked) tmpStr = Accessory.ConvertStringToHex(textBox_tagEdit1.Text);
-            else tmpStr = Accessory.CheckHexString(textBox_tagEdit1.Text);
-
-            byte[] tmp = Accessory.ConvertHexToByteArray(tmpStr);
-            byte[] outp = new byte[_pageSize];
-            for (int i = 0; i < outp.Length; i++) outp[i] = 0xff;
-            if (tmp.Length < _pageSize) Array.Copy(tmp, outp, tmp.Length);
-            else if (tmp.Length > _pageSize) Array.Copy(tmp, outp, _pageSize);
-            else outp = tmp;
-
-            if (checkBox_tagHex.Checked) textBox_tagEdit1.Text = Accessory.ConvertByteArrayToHex(outp);
-            else textBox_tagEdit1.Text = Accessory.ConvertHexToString(Accessory.ConvertByteArrayToHex(outp));*/
         }
 
         private void textBox_keyA_Leave(object sender, EventArgs e)
@@ -589,6 +592,7 @@ namespace RFID_Reader
             textBox_keyA.Enabled = checkBox_authA.Checked;
             if (checkBox_authA.Checked)
             {
+                textBox_keyA_Leave(this, EventArgs.Empty);
                 _defaultKeyA = Accessory.ConvertHexToByteArray(textBox_keyA.Text);
             }
             else _defaultKeyA = null;
@@ -599,6 +603,7 @@ namespace RFID_Reader
             textBox_keyB.Enabled = checkBox_authB.Checked;
             if (checkBox_authB.Checked)
             {
+                textBox_keyB_Leave(this, EventArgs.Empty);
                 _defaultKeyB = Accessory.ConvertHexToByteArray(textBox_keyB.Text);
             }
             else _defaultKeyB = null;
@@ -618,6 +623,71 @@ namespace RFID_Reader
                 array[i] = array[i - 1];
             }
             array[0] = tmpKey;
+        }
+
+        private void dataGridView_data_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            dataGridView_data.CommitEdit(DataGridViewDataErrorContexts.Commit);
+        }
+
+        private void dataGridView_data_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if (dataGridView_data.Rows[e.RowIndex].Cells[e.ColumnIndex] is DataGridViewCheckBoxCell)
+            {
+                if ((bool)dataGridView_data.Rows[e.RowIndex].Cells[e.ColumnIndex].Value == true)
+                {
+                    dataGridView_data.Rows[e.RowIndex].Cells[e.ColumnIndex + 1].ReadOnly = false;
+                }
+                else
+                {
+                    dataGridView_data.Rows[e.RowIndex].Cells[e.ColumnIndex + 1].ReadOnly = true;
+                }
+            }
+            else if (e.ColumnIndex == 2)
+            {
+                string tmpStr = "";
+                if (!checkBox_dataHex.Checked) tmpStr = Accessory.ConvertStringToHex(dataGridView_data.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString());
+                else tmpStr = Accessory.CheckHexString(dataGridView_data.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString());
+
+                byte[] tmp = Accessory.ConvertHexToByteArray(tmpStr);
+                byte[] outp = new byte[_pageSize];
+                for (int i = 0; i < outp.Length; i++) outp[i] = 0x00;
+                if (tmp.Length < _pageSize) Array.Copy(tmp, outp, tmp.Length);
+                else if (tmp.Length > _pageSize) Array.Copy(tmp, outp, _pageSize);
+                else outp = tmp;
+                cardData[e.RowIndex] = outp;
+
+                if (checkBox_dataHex.Checked) dataGridView_data.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = Accessory.ConvertByteArrayToHex(outp);
+                else dataGridView_data.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = Accessory.ConvertHexToString(Accessory.ConvertByteArrayToHex(outp)).Replace((char)0, ' ');
+            }
+        }
+
+        private void checkBox_keyHex_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox_keyHex.Checked)
+            {
+                textBox_keyA.Text = Accessory.ConvertByteArrayToHex(_defaultKeyA);
+                textBox_keyB.Text = Accessory.ConvertByteArrayToHex(_defaultKeyB);
+            }
+            else
+            {
+                textBox_keyA.Text = Accessory.ConvertByteArrayToString(_defaultKeyA);
+                textBox_keyB.Text = Accessory.ConvertByteArrayToString(_defaultKeyB);
+            }
+        }
+
+        private void checkBox_dataHex_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox_dataHex.Checked)
+            {
+                for (int i = 0; i < dataGridView_data.Rows.Count; i++)
+                    dataGridView_data.Rows[i].Cells[2].Value = Accessory.ConvertByteArrayToHex(cardData[i]);
+            }
+            else
+            {
+                for (int i = 0; i < dataGridView_data.Rows.Count; i++)
+                    dataGridView_data.Rows[i].Cells[2].Value = Accessory.ConvertByteArrayToString(cardData[i]).Replace((char)0, ' ');
+            }
         }
 
     }

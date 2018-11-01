@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
             this.button_hardReset = new System.Windows.Forms.Button();
             this.button_refersh = new System.Windows.Forms.Button();
             this.label17 = new System.Windows.Forms.Label();
@@ -47,7 +47,7 @@
             this.textBox_tagType = new System.Windows.Forms.TextBox();
             this.label_tagType = new System.Windows.Forms.Label();
             this.label_tagFound = new System.Windows.Forms.Label();
-            this.checkBox_tagHex = new System.Windows.Forms.CheckBox();
+            this.checkBox_dataHex = new System.Windows.Forms.CheckBox();
             this.button_read = new System.Windows.Forms.Button();
             this.button_write = new System.Windows.Forms.Button();
             this.button_clear = new System.Windows.Forms.Button();
@@ -176,6 +176,7 @@
             this.checkBox_keyHex.TabIndex = 3;
             this.checkBox_keyHex.Text = "hex key";
             this.checkBox_keyHex.UseVisualStyleBackColor = true;
+            this.checkBox_keyHex.CheckedChanged += new System.EventHandler(this.checkBox_keyHex_CheckedChanged);
             // 
             // textBox_keyB
             // 
@@ -261,19 +262,19 @@
             this.label_tagFound.Text = "Tag not found";
             this.label_tagFound.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // checkBox_tagHex
+            // checkBox_dataHex
             // 
-            this.checkBox_tagHex.AutoSize = true;
-            this.checkBox_tagHex.Checked = true;
-            this.checkBox_tagHex.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox_tagHex.Location = new System.Drawing.Point(508, 155);
-            this.checkBox_tagHex.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.checkBox_tagHex.Name = "checkBox_tagHex";
-            this.checkBox_tagHex.Size = new System.Drawing.Size(89, 24);
-            this.checkBox_tagHex.TabIndex = 31;
-            this.checkBox_tagHex.Text = "hex data";
-            this.checkBox_tagHex.UseVisualStyleBackColor = true;
-            this.checkBox_tagHex.CheckedChanged += new System.EventHandler(this.checkBox_tagHex2_CheckedChanged);
+            this.checkBox_dataHex.AutoSize = true;
+            this.checkBox_dataHex.Checked = true;
+            this.checkBox_dataHex.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox_dataHex.Location = new System.Drawing.Point(508, 155);
+            this.checkBox_dataHex.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.checkBox_dataHex.Name = "checkBox_dataHex";
+            this.checkBox_dataHex.Size = new System.Drawing.Size(89, 24);
+            this.checkBox_dataHex.TabIndex = 31;
+            this.checkBox_dataHex.Text = "hex data";
+            this.checkBox_dataHex.UseVisualStyleBackColor = true;
+            this.checkBox_dataHex.CheckedChanged += new System.EventHandler(this.checkBox_dataHex_CheckedChanged);
             // 
             // button_read
             // 
@@ -312,26 +313,27 @@
             this.dataGridView_data.AllowUserToAddRows = false;
             this.dataGridView_data.AllowUserToDeleteRows = false;
             this.dataGridView_data.AllowUserToResizeRows = false;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Courier New", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.dataGridView_data.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Courier New", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.dataGridView_data.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle7;
             this.dataGridView_data.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.dataGridView_data.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridView_data.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dataGridView_data.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.dataGridView_data.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
             this.dataGridView_data.Location = new System.Drawing.Point(172, 188);
             this.dataGridView_data.MultiSelect = false;
             this.dataGridView_data.Name = "dataGridView_data";
-            this.dataGridView_data.ReadOnly = true;
             this.dataGridView_data.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Courier New", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.dataGridView_data.RowsDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("Courier New", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.dataGridView_data.RowsDefaultCellStyle = dataGridViewCellStyle8;
             this.dataGridView_data.RowTemplate.DefaultCellStyle.Font = new System.Drawing.Font("Courier New", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.dataGridView_data.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridView_data.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.dataGridView_data.ShowEditingIcon = false;
             this.dataGridView_data.Size = new System.Drawing.Size(932, 281);
             this.dataGridView_data.TabIndex = 51;
+            this.dataGridView_data.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_data_CellContentClick);
+            this.dataGridView_data.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_data_CellValueChanged);
             // 
             // Form1
             // 
@@ -360,7 +362,7 @@
             this.Controls.Add(this.label17);
             this.Controls.Add(this.button_refersh);
             this.Controls.Add(this.button_hardReset);
-            this.Controls.Add(this.checkBox_tagHex);
+            this.Controls.Add(this.checkBox_dataHex);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "Form1";
@@ -392,7 +394,7 @@
         private System.Windows.Forms.Button button_read;
         private System.Windows.Forms.Button button_write;
         private System.Windows.Forms.Button button_clear;
-        private System.Windows.Forms.CheckBox checkBox_tagHex;
+        private System.Windows.Forms.CheckBox checkBox_dataHex;
         private System.Windows.Forms.DataGridView dataGridView_data;
     }
 }

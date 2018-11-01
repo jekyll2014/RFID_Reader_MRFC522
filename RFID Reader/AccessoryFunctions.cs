@@ -395,6 +395,7 @@ public partial class Accessory
 
     public static string ConvertByteArrayToString(byte[] byteArr, int codePage = 866)
     {
+        if (byteArr == null) return "";
         return Encoding.GetEncoding(codePage).GetString(byteArr);
     }
 
