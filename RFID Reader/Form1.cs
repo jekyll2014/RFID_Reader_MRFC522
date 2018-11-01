@@ -452,6 +452,12 @@ namespace RFID_Reader
             else
             {
                 //textBox_tagEdit0.Text = "Can't find tag";
+                dataGridView_data.Rows.Clear();
+                dataGridView_data.Columns.Clear();
+                dataGridView_data.Columns.Add("num", "");
+                dataGridView_data.Columns[0].SortMode = DataGridViewColumnSortMode.NotSortable;
+                dataGridView_data.Rows.Add();
+                dataGridView_data.Rows[dataGridView_data.Rows.Count - 1].Cells[0].Value = "Can't find tag";
             }
 
             _aTimer.Enabled = true;
