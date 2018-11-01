@@ -28,6 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.button_hardReset = new System.Windows.Forms.Button();
             this.button_refersh = new System.Windows.Forms.Button();
             this.label17 = new System.Windows.Forms.Label();
@@ -45,26 +47,12 @@
             this.textBox_tagType = new System.Windows.Forms.TextBox();
             this.label_tagType = new System.Windows.Forms.Label();
             this.label_tagFound = new System.Windows.Forms.Label();
-            this.checkBox_page7 = new System.Windows.Forms.CheckBox();
-            this.checkBox_page6 = new System.Windows.Forms.CheckBox();
-            this.checkBox_page5 = new System.Windows.Forms.CheckBox();
-            this.checkBox_page4 = new System.Windows.Forms.CheckBox();
-            this.checkBox_page3 = new System.Windows.Forms.CheckBox();
-            this.checkBox_page2 = new System.Windows.Forms.CheckBox();
-            this.checkBox_page1 = new System.Windows.Forms.CheckBox();
             this.checkBox_tagHex = new System.Windows.Forms.CheckBox();
-            this.textBox_tagEdit7 = new System.Windows.Forms.TextBox();
-            this.textBox_tagEdit6 = new System.Windows.Forms.TextBox();
-            this.textBox_tagEdit5 = new System.Windows.Forms.TextBox();
-            this.textBox_tagEdit4 = new System.Windows.Forms.TextBox();
-            this.textBox_tagEdit3 = new System.Windows.Forms.TextBox();
-            this.textBox_tagEdit2 = new System.Windows.Forms.TextBox();
-            this.textBox_tagEdit1 = new System.Windows.Forms.TextBox();
-            this.textBox_tagEdit0 = new System.Windows.Forms.TextBox();
             this.button_read = new System.Windows.Forms.Button();
             this.button_write = new System.Windows.Forms.Button();
             this.button_clear = new System.Windows.Forms.Button();
-            this.checkBox_page0 = new System.Windows.Forms.CheckBox();
+            this.dataGridView_data = new System.Windows.Forms.DataGridView();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_data)).BeginInit();
             this.SuspendLayout();
             // 
             // button_hardReset
@@ -273,99 +261,6 @@
             this.label_tagFound.Text = "Tag not found";
             this.label_tagFound.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // checkBox_page7
-            // 
-            this.checkBox_page7.AutoSize = true;
-            this.checkBox_page7.BackColor = System.Drawing.Color.Red;
-            this.checkBox_page7.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.checkBox_page7.Location = new System.Drawing.Point(175, 441);
-            this.checkBox_page7.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.checkBox_page7.Name = "checkBox_page7";
-            this.checkBox_page7.Size = new System.Drawing.Size(83, 24);
-            this.checkBox_page7.TabIndex = 37;
-            this.checkBox_page7.Text = "Page07";
-            this.checkBox_page7.UseVisualStyleBackColor = false;
-            this.checkBox_page7.CheckedChanged += new System.EventHandler(this.checkBox_page7_CheckedChanged);
-            // 
-            // checkBox_page6
-            // 
-            this.checkBox_page6.AutoSize = true;
-            this.checkBox_page6.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.checkBox_page6.Location = new System.Drawing.Point(175, 405);
-            this.checkBox_page6.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.checkBox_page6.Name = "checkBox_page6";
-            this.checkBox_page6.Size = new System.Drawing.Size(83, 24);
-            this.checkBox_page6.TabIndex = 36;
-            this.checkBox_page6.Text = "Page06";
-            this.checkBox_page6.UseVisualStyleBackColor = true;
-            this.checkBox_page6.CheckedChanged += new System.EventHandler(this.checkBox_page6_CheckedChanged);
-            // 
-            // checkBox_page5
-            // 
-            this.checkBox_page5.AutoSize = true;
-            this.checkBox_page5.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.checkBox_page5.Location = new System.Drawing.Point(175, 369);
-            this.checkBox_page5.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.checkBox_page5.Name = "checkBox_page5";
-            this.checkBox_page5.Size = new System.Drawing.Size(83, 24);
-            this.checkBox_page5.TabIndex = 39;
-            this.checkBox_page5.Text = "Page05";
-            this.checkBox_page5.UseVisualStyleBackColor = true;
-            this.checkBox_page5.CheckedChanged += new System.EventHandler(this.checkBox_page5_CheckedChanged);
-            // 
-            // checkBox_page4
-            // 
-            this.checkBox_page4.AutoSize = true;
-            this.checkBox_page4.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.checkBox_page4.Location = new System.Drawing.Point(175, 333);
-            this.checkBox_page4.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.checkBox_page4.Name = "checkBox_page4";
-            this.checkBox_page4.Size = new System.Drawing.Size(83, 24);
-            this.checkBox_page4.TabIndex = 35;
-            this.checkBox_page4.Text = "Page04";
-            this.checkBox_page4.UseVisualStyleBackColor = true;
-            this.checkBox_page4.CheckedChanged += new System.EventHandler(this.checkBox_page4_CheckedChanged);
-            // 
-            // checkBox_page3
-            // 
-            this.checkBox_page3.AutoSize = true;
-            this.checkBox_page3.BackColor = System.Drawing.Color.Red;
-            this.checkBox_page3.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.checkBox_page3.Location = new System.Drawing.Point(175, 297);
-            this.checkBox_page3.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.checkBox_page3.Name = "checkBox_page3";
-            this.checkBox_page3.Size = new System.Drawing.Size(83, 24);
-            this.checkBox_page3.TabIndex = 34;
-            this.checkBox_page3.Text = "Page03";
-            this.checkBox_page3.UseVisualStyleBackColor = false;
-            this.checkBox_page3.CheckedChanged += new System.EventHandler(this.checkBox_page3_CheckedChanged);
-            // 
-            // checkBox_page2
-            // 
-            this.checkBox_page2.AutoSize = true;
-            this.checkBox_page2.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.checkBox_page2.Location = new System.Drawing.Point(175, 261);
-            this.checkBox_page2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.checkBox_page2.Name = "checkBox_page2";
-            this.checkBox_page2.Size = new System.Drawing.Size(83, 24);
-            this.checkBox_page2.TabIndex = 33;
-            this.checkBox_page2.Text = "Page02";
-            this.checkBox_page2.UseVisualStyleBackColor = true;
-            this.checkBox_page2.CheckedChanged += new System.EventHandler(this.checkBox_page2_CheckedChanged);
-            // 
-            // checkBox_page1
-            // 
-            this.checkBox_page1.AutoSize = true;
-            this.checkBox_page1.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.checkBox_page1.Location = new System.Drawing.Point(175, 225);
-            this.checkBox_page1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.checkBox_page1.Name = "checkBox_page1";
-            this.checkBox_page1.Size = new System.Drawing.Size(83, 24);
-            this.checkBox_page1.TabIndex = 32;
-            this.checkBox_page1.Text = "Page01";
-            this.checkBox_page1.UseVisualStyleBackColor = true;
-            this.checkBox_page1.CheckedChanged += new System.EventHandler(this.checkBox_page1_CheckedChanged);
-            // 
             // checkBox_tagHex
             // 
             this.checkBox_tagHex.AutoSize = true;
@@ -379,111 +274,6 @@
             this.checkBox_tagHex.Text = "hex data";
             this.checkBox_tagHex.UseVisualStyleBackColor = true;
             this.checkBox_tagHex.CheckedChanged += new System.EventHandler(this.checkBox_tagHex2_CheckedChanged);
-            // 
-            // textBox_tagEdit7
-            // 
-            this.textBox_tagEdit7.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox_tagEdit7.Enabled = false;
-            this.textBox_tagEdit7.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox_tagEdit7.Location = new System.Drawing.Point(279, 441);
-            this.textBox_tagEdit7.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.textBox_tagEdit7.Name = "textBox_tagEdit7";
-            this.textBox_tagEdit7.Size = new System.Drawing.Size(830, 21);
-            this.textBox_tagEdit7.TabIndex = 28;
-            this.textBox_tagEdit7.Leave += new System.EventHandler(this.textBox_tagEdit7_Leave);
-            // 
-            // textBox_tagEdit6
-            // 
-            this.textBox_tagEdit6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox_tagEdit6.Enabled = false;
-            this.textBox_tagEdit6.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox_tagEdit6.Location = new System.Drawing.Point(279, 405);
-            this.textBox_tagEdit6.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.textBox_tagEdit6.Name = "textBox_tagEdit6";
-            this.textBox_tagEdit6.Size = new System.Drawing.Size(830, 21);
-            this.textBox_tagEdit6.TabIndex = 27;
-            this.textBox_tagEdit6.Leave += new System.EventHandler(this.textBox_tagEdit6_Leave);
-            // 
-            // textBox_tagEdit5
-            // 
-            this.textBox_tagEdit5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox_tagEdit5.Enabled = false;
-            this.textBox_tagEdit5.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox_tagEdit5.Location = new System.Drawing.Point(279, 369);
-            this.textBox_tagEdit5.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.textBox_tagEdit5.Name = "textBox_tagEdit5";
-            this.textBox_tagEdit5.Size = new System.Drawing.Size(830, 21);
-            this.textBox_tagEdit5.TabIndex = 26;
-            this.textBox_tagEdit5.Leave += new System.EventHandler(this.textBox_tagEdit5_Leave);
-            // 
-            // textBox_tagEdit4
-            // 
-            this.textBox_tagEdit4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox_tagEdit4.Enabled = false;
-            this.textBox_tagEdit4.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox_tagEdit4.Location = new System.Drawing.Point(279, 333);
-            this.textBox_tagEdit4.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.textBox_tagEdit4.Name = "textBox_tagEdit4";
-            this.textBox_tagEdit4.Size = new System.Drawing.Size(830, 21);
-            this.textBox_tagEdit4.TabIndex = 25;
-            this.textBox_tagEdit4.Leave += new System.EventHandler(this.textBox_tagEdit4_Leave);
-            // 
-            // textBox_tagEdit3
-            // 
-            this.textBox_tagEdit3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox_tagEdit3.Enabled = false;
-            this.textBox_tagEdit3.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox_tagEdit3.Location = new System.Drawing.Point(279, 297);
-            this.textBox_tagEdit3.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.textBox_tagEdit3.Name = "textBox_tagEdit3";
-            this.textBox_tagEdit3.Size = new System.Drawing.Size(830, 21);
-            this.textBox_tagEdit3.TabIndex = 24;
-            this.textBox_tagEdit3.Leave += new System.EventHandler(this.textBox_tagEdit3_Leave);
-            // 
-            // textBox_tagEdit2
-            // 
-            this.textBox_tagEdit2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox_tagEdit2.Enabled = false;
-            this.textBox_tagEdit2.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox_tagEdit2.Location = new System.Drawing.Point(279, 261);
-            this.textBox_tagEdit2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.textBox_tagEdit2.Name = "textBox_tagEdit2";
-            this.textBox_tagEdit2.Size = new System.Drawing.Size(830, 21);
-            this.textBox_tagEdit2.TabIndex = 23;
-            this.textBox_tagEdit2.Leave += new System.EventHandler(this.textBox_tagEdit2_Leave);
-            // 
-            // textBox_tagEdit1
-            // 
-            this.textBox_tagEdit1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox_tagEdit1.Enabled = false;
-            this.textBox_tagEdit1.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox_tagEdit1.Location = new System.Drawing.Point(279, 225);
-            this.textBox_tagEdit1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.textBox_tagEdit1.Name = "textBox_tagEdit1";
-            this.textBox_tagEdit1.Size = new System.Drawing.Size(830, 21);
-            this.textBox_tagEdit1.TabIndex = 30;
-            this.textBox_tagEdit1.Leave += new System.EventHandler(this.textBox_tagEdit1_Leave);
-            // 
-            // textBox_tagEdit0
-            // 
-            this.textBox_tagEdit0.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox_tagEdit0.BackColor = System.Drawing.SystemColors.Window;
-            this.textBox_tagEdit0.Enabled = false;
-            this.textBox_tagEdit0.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox_tagEdit0.Location = new System.Drawing.Point(279, 189);
-            this.textBox_tagEdit0.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.textBox_tagEdit0.Name = "textBox_tagEdit0";
-            this.textBox_tagEdit0.ReadOnly = true;
-            this.textBox_tagEdit0.Size = new System.Drawing.Size(830, 21);
-            this.textBox_tagEdit0.TabIndex = 22;
             // 
             // button_read
             // 
@@ -517,18 +307,31 @@
             this.button_clear.Text = "Clear tag";
             this.button_clear.UseVisualStyleBackColor = true;
             // 
-            // checkBox_page0
+            // dataGridView_data
             // 
-            this.checkBox_page0.AutoSize = true;
-            this.checkBox_page0.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.checkBox_page0.Enabled = false;
-            this.checkBox_page0.Location = new System.Drawing.Point(175, 191);
-            this.checkBox_page0.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.checkBox_page0.Name = "checkBox_page0";
-            this.checkBox_page0.Size = new System.Drawing.Size(83, 24);
-            this.checkBox_page0.TabIndex = 32;
-            this.checkBox_page0.Text = "Page00";
-            this.checkBox_page0.UseVisualStyleBackColor = true;
+            this.dataGridView_data.AllowUserToAddRows = false;
+            this.dataGridView_data.AllowUserToDeleteRows = false;
+            this.dataGridView_data.AllowUserToResizeRows = false;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Courier New", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.dataGridView_data.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            this.dataGridView_data.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataGridView_data.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridView_data.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.dataGridView_data.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
+            this.dataGridView_data.Location = new System.Drawing.Point(172, 188);
+            this.dataGridView_data.MultiSelect = false;
+            this.dataGridView_data.Name = "dataGridView_data";
+            this.dataGridView_data.ReadOnly = true;
+            this.dataGridView_data.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Courier New", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.dataGridView_data.RowsDefaultCellStyle = dataGridViewCellStyle2;
+            this.dataGridView_data.RowTemplate.DefaultCellStyle.Font = new System.Drawing.Font("Courier New", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.dataGridView_data.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridView_data.ShowEditingIcon = false;
+            this.dataGridView_data.Size = new System.Drawing.Size(932, 281);
+            this.dataGridView_data.TabIndex = 51;
             // 
             // Form1
             // 
@@ -536,6 +339,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(1116, 481);
+            this.Controls.Add(this.dataGridView_data);
             this.Controls.Add(this.button_read);
             this.Controls.Add(this.button_write);
             this.Controls.Add(this.label_tagFound);
@@ -551,32 +355,17 @@
             this.Controls.Add(this.checkBox_authB);
             this.Controls.Add(this.button_start);
             this.Controls.Add(this.comboBox_portName);
-            this.Controls.Add(this.checkBox_page7);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.checkBox_page6);
             this.Controls.Add(this.comboBox_speed);
-            this.Controls.Add(this.checkBox_page5);
             this.Controls.Add(this.label17);
-            this.Controls.Add(this.checkBox_page4);
             this.Controls.Add(this.button_refersh);
-            this.Controls.Add(this.checkBox_page3);
             this.Controls.Add(this.button_hardReset);
-            this.Controls.Add(this.checkBox_page2);
-            this.Controls.Add(this.textBox_tagEdit0);
-            this.Controls.Add(this.checkBox_page0);
-            this.Controls.Add(this.checkBox_page1);
-            this.Controls.Add(this.textBox_tagEdit1);
             this.Controls.Add(this.checkBox_tagHex);
-            this.Controls.Add(this.textBox_tagEdit2);
-            this.Controls.Add(this.textBox_tagEdit3);
-            this.Controls.Add(this.textBox_tagEdit7);
-            this.Controls.Add(this.textBox_tagEdit4);
-            this.Controls.Add(this.textBox_tagEdit6);
-            this.Controls.Add(this.textBox_tagEdit5);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "Form1";
             this.Text = "RFID Reader";
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_data)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -603,23 +392,8 @@
         private System.Windows.Forms.Button button_read;
         private System.Windows.Forms.Button button_write;
         private System.Windows.Forms.Button button_clear;
-        private System.Windows.Forms.CheckBox checkBox_page7;
-        private System.Windows.Forms.CheckBox checkBox_page6;
-        private System.Windows.Forms.CheckBox checkBox_page5;
-        private System.Windows.Forms.CheckBox checkBox_page4;
-        private System.Windows.Forms.CheckBox checkBox_page3;
-        private System.Windows.Forms.CheckBox checkBox_page2;
-        private System.Windows.Forms.CheckBox checkBox_page1;
         private System.Windows.Forms.CheckBox checkBox_tagHex;
-        private System.Windows.Forms.TextBox textBox_tagEdit7;
-        private System.Windows.Forms.TextBox textBox_tagEdit6;
-        private System.Windows.Forms.TextBox textBox_tagEdit5;
-        private System.Windows.Forms.TextBox textBox_tagEdit4;
-        private System.Windows.Forms.TextBox textBox_tagEdit3;
-        private System.Windows.Forms.TextBox textBox_tagEdit2;
-        private System.Windows.Forms.TextBox textBox_tagEdit1;
-        private System.Windows.Forms.TextBox textBox_tagEdit0;
-        private System.Windows.Forms.CheckBox checkBox_page0;
+        private System.Windows.Forms.DataGridView dataGridView_data;
     }
 }
 
