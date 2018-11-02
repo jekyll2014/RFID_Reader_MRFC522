@@ -20,7 +20,7 @@ namespace RFID_Reader
         private byte _pageSize = 16;
         private byte[] _defaultKeyA = new byte[] { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
         private byte[] _defaultKeyB = null;
-        private static Semaphore mutexObj = new Semaphore(0, 1);
+        private static Semaphore mutexObj = new Semaphore(1, 2);
 
         private byte[][] _defaultKeys = new byte[][]
 {
@@ -56,7 +56,7 @@ namespace RFID_Reader
 
         private void RFID_get(object sender, EventArgs e)
         {
-            mutexObj.WaitOne(_tmr_delay);
+            if (!mutexObj.WaitOne(10)) return;
             _aTimer.Enabled = false;
             this.Invoke((MethodInvoker)delegate
             {
@@ -264,18 +264,12 @@ namespace RFID_Reader
                 }
                 else if (t == MFRC522.PICC_Type.PICC_TYPE_MIFARE_UL)
                 {
-                    /*byte[] PSWBuff = new byte[4] { 0xff, 0xff, 0xff, 0xff };
-                    byte[] pACK = new byte[2];
-                    status = reader.PCD_NTAG216_AUTH(PSWBuff, out pACK);
-                    if (status == MFRC522.StatusCode.STATUS_OK)
+                    sector = (byte)(sector * 4);
+                    for (int i = 0; i < 4; i++)
                     {
-                        for (int i = 0; i < 4; i++)
-                        {
-                            byte[] tmp = new byte[4] { data[0 + i * 4], data[1 + i * 4], data[2 + i * 4], data[3 + i * 4] };
-                            status = reader.MIFARE_Ultralight_Write((byte)(sector * 4 + i), tmp, (byte)tmp.Length);
-                        }
-                    }*/
-                    MessageBox.Show("Can only write to MIFARE CLASSIC MINI/1K/4K");
+                        byte[] tmp = new byte[4] { data[0 + i * 4], data[1 + i * 4], data[2 + i * 4], data[3 + i * 4] };
+                        status = reader.MIFARE_Ultralight_Write((byte)(sector + i), tmp, (byte)tmp.Length);
+                    }
                 }
                 return (status == MFRC522.StatusCode.STATUS_OK);
             }
@@ -301,7 +295,7 @@ namespace RFID_Reader
 
         private void button_Start_Click(object sender, EventArgs e)
         {
-            mutexObj.WaitOne(_tmr_delay);
+            if (!mutexObj.WaitOne(10)) return;
             if (button_start.Text == "Start reading")
             {
                 if (comboBox_portName.SelectedIndex == 0)
@@ -345,8 +339,8 @@ namespace RFID_Reader
 
         private void button_read_Click(object sender, EventArgs e)
         {
+            if (!mutexObj.WaitOne(10)) return;
             _aTimer.Enabled = false;
-            mutexObj.WaitOne(_tmr_delay);
 
             this.Invoke((MethodInvoker)delegate
             {
@@ -358,7 +352,6 @@ namespace RFID_Reader
 
             Thread t = new Thread(new ThreadStart(getDataFromRFID));
             t.Start();
-
         }
 
         private void getDataFromRFID()
@@ -523,13 +516,13 @@ namespace RFID_Reader
                 button_write.Enabled = true;
                 button_clear.Enabled = true;
             });
-            mutexObj.Release();
             _aTimer.Enabled = true;
+            mutexObj.Release();
         }
 
         private void button_write_Click(object sender, EventArgs e)
         {
-            mutexObj.WaitOne(_tmr_delay);
+            if (!mutexObj.WaitOne(10)) return;
             _aTimer.Enabled = false;
             //Accessory.Delay_ms(_tmr_delay + 100);
 
@@ -584,13 +577,12 @@ namespace RFID_Reader
                     }
                 }*/
             }
+            _aTimer.Enabled = true;
             this.Invoke((MethodInvoker)delegate
             {
                 label_tagFound.BackColor = Color.Green;
                 label_tagFound.Text = "Tag written";
             });
-
-            _aTimer.Enabled = true;
             mutexObj.Release();
         }
 
@@ -688,20 +680,23 @@ namespace RFID_Reader
             }
             else if (e.ColumnIndex == 2)
             {
-                string tmpStr = "";
-                if (!checkBox_dataHex.Checked) tmpStr = Accessory.ConvertStringToHex(dataGridView_data.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString());
-                else tmpStr = Accessory.CheckHexString(dataGridView_data.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString());
+                if (dataGridView_data.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString() != "")
+                {
+                    string tmpStr = "";
+                    if (!checkBox_dataHex.Checked) tmpStr = Accessory.ConvertStringToHex(dataGridView_data.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString());
+                    else tmpStr = Accessory.CheckHexString(dataGridView_data.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString());
 
-                byte[] tmp = Accessory.ConvertHexToByteArray(tmpStr);
-                byte[] outp = new byte[_pageSize];
-                for (int i = 0; i < outp.Length; i++) outp[i] = 0x00;
-                if (tmp.Length < _pageSize) Array.Copy(tmp, outp, tmp.Length);
-                else if (tmp.Length > _pageSize) Array.Copy(tmp, outp, _pageSize);
-                else outp = tmp;
-                cardData[e.RowIndex] = outp;
+                    byte[] tmp = Accessory.ConvertHexToByteArray(tmpStr);
+                    byte[] outp = new byte[_pageSize];
+                    for (int i = 0; i < outp.Length; i++) outp[i] = 0x00;
+                    if (tmp.Length < _pageSize) Array.Copy(tmp, outp, tmp.Length);
+                    else if (tmp.Length > _pageSize) Array.Copy(tmp, outp, _pageSize);
+                    else outp = tmp;
+                    cardData[e.RowIndex] = outp;
 
-                if (checkBox_dataHex.Checked) dataGridView_data.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = Accessory.ConvertByteArrayToHex(outp);
-                else dataGridView_data.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = Accessory.ConvertHexToString(Accessory.ConvertByteArrayToHex(outp)).Replace((char)0, ' ');
+                    if (checkBox_dataHex.Checked) dataGridView_data.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = Accessory.ConvertByteArrayToHex(outp);
+                    else dataGridView_data.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = Accessory.ConvertHexToString(Accessory.ConvertByteArrayToHex(outp)).Replace((char)0, ' ');
+                }
             }
         }
 
