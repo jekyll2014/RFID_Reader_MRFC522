@@ -1782,7 +1782,7 @@ namespace RFID_Reader
             StatusCode status;
             byte byteCount;
             byte[] buffer = new byte[18];
-            byte i;
+            //byte i;
 
             //Serial.println(F("Page  0  1  2  3"));
             // Try the mpages of the original Ultralight. Ultralight C has more pages.

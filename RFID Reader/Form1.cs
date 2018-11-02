@@ -345,8 +345,8 @@ namespace RFID_Reader
 
         private void button_read_Click(object sender, EventArgs e)
         {
-            mutexObj.WaitOne(_tmr_delay);
             _aTimer.Enabled = false;
+            mutexObj.WaitOne(_tmr_delay);
 
             this.Invoke((MethodInvoker)delegate
             {
@@ -355,6 +355,22 @@ namespace RFID_Reader
                 this.Refresh();
             });
             checkBox_dataHex.Checked = true;
+
+            Thread t = new Thread(new ThreadStart(getDataFromRFID));
+            t.Start();
+
+        }
+
+        private void getDataFromRFID()
+        {
+            this.Invoke((MethodInvoker)delegate
+            {
+                button_start.Enabled = false;
+                button_hardReset.Enabled = false;
+                button_read.Enabled = false;
+                button_write.Enabled = false;
+                button_clear.Enabled = false;
+            });
 
             byte[] uid = RFID_hunt();
             MFRC522.PICC_Type t = reader.PICC_GetType(reader.uid.sak);
@@ -367,54 +383,60 @@ namespace RFID_Reader
                     List<byte[]> data = new List<byte[]>();
                     data = RFID_read(uid, null, null, 0, (byte)(pageNum - 1));
                     cardData.AddRange(data);
-                    dataGridView_data.Rows.Clear();
-                    dataGridView_data.Columns.Clear();
-                    dataGridView_data.Columns.Add("num", "#");
-                    dataGridView_data.Columns[0].SortMode = DataGridViewColumnSortMode.NotSortable;
-
-                    DataGridViewCheckBoxColumn checkCol = new DataGridViewCheckBoxColumn();
-                    checkCol.Name = "check";
-                    checkCol.HeaderText = "Writable";
-                    dataGridView_data.Columns.Add(checkCol);
-                    dataGridView_data.Columns[1].SortMode = DataGridViewColumnSortMode.NotSortable;
-
-                    dataGridView_data.Columns.Add("data", "Card data");
-                    dataGridView_data.Columns[2].SortMode = DataGridViewColumnSortMode.NotSortable;
-                    int i = 0;
-                    foreach (var d in data)
+                    this.Invoke((MethodInvoker)delegate
                     {
-                        dataGridView_data.Rows.Add();
-                        dataGridView_data.Rows[dataGridView_data.Rows.Count - 1].Cells[0].Value = i.ToString("D3");
-                        dataGridView_data.Rows[dataGridView_data.Rows.Count - 1].Cells[0].ReadOnly = true;
-                        dataGridView_data.Rows[dataGridView_data.Rows.Count - 1].Cells[1].Value = false;
-                        dataGridView_data.Rows[dataGridView_data.Rows.Count - 1].Cells[2].Value = Accessory.ConvertByteArrayToHex(d);
-                        dataGridView_data.Rows[dataGridView_data.Rows.Count - 1].Cells[2].ReadOnly = true;
-                        i++;
-                        this.Refresh();
-                    }
+                        dataGridView_data.Rows.Clear();
+                        dataGridView_data.Columns.Clear();
+                        dataGridView_data.Columns.Add("num", "#");
+                        dataGridView_data.Columns[0].SortMode = DataGridViewColumnSortMode.NotSortable;
+
+                        DataGridViewCheckBoxColumn checkCol = new DataGridViewCheckBoxColumn();
+                        checkCol.Name = "check";
+                        checkCol.HeaderText = "Writable";
+                        dataGridView_data.Columns.Add(checkCol);
+                        dataGridView_data.Columns[1].SortMode = DataGridViewColumnSortMode.NotSortable;
+
+                        dataGridView_data.Columns.Add("data", "Card data");
+                        dataGridView_data.Columns[2].SortMode = DataGridViewColumnSortMode.NotSortable;
+                        int i = 0;
+                        foreach (var d in data)
+                        {
+                            dataGridView_data.Rows.Add();
+                            dataGridView_data.Rows[dataGridView_data.Rows.Count - 1].Cells[0].Value = i.ToString("D3");
+                            dataGridView_data.Rows[dataGridView_data.Rows.Count - 1].Cells[0].ReadOnly = true;
+                            dataGridView_data.Rows[dataGridView_data.Rows.Count - 1].Cells[1].Value = false;
+                            dataGridView_data.Rows[dataGridView_data.Rows.Count - 1].Cells[1].Style.BackColor = Color.White;
+                            dataGridView_data.Rows[dataGridView_data.Rows.Count - 1].Cells[2].Value = Accessory.ConvertByteArrayToHex(d);
+                            dataGridView_data.Rows[dataGridView_data.Rows.Count - 1].Cells[2].ReadOnly = true;
+                            i++;
+                            this.Refresh();
+                        }
+                    });
                 }
                 else if (t == MFRC522.PICC_Type.PICC_TYPE_MIFARE_MINI || t == MFRC522.PICC_Type.PICC_TYPE_MIFARE_1K || t == MFRC522.PICC_Type.PICC_TYPE_MIFARE_4K || t == MFRC522.PICC_Type.PICC_TYPE_MIFARE_PLUS)
                 {
-                    dataGridView_data.Rows.Clear();
-                    dataGridView_data.Columns.Clear();
-                    dataGridView_data.Columns.Add("num", "#");
-                    dataGridView_data.Columns[0].SortMode = DataGridViewColumnSortMode.NotSortable;
+                    this.Invoke((MethodInvoker)delegate
+                    {
+                        dataGridView_data.Rows.Clear();
+                        dataGridView_data.Columns.Clear();
+                        dataGridView_data.Columns.Add("num", "#");
+                        dataGridView_data.Columns[0].SortMode = DataGridViewColumnSortMode.NotSortable;
 
-                    DataGridViewCheckBoxColumn checkCol = new DataGridViewCheckBoxColumn();
-                    checkCol.Name = "check";
-                    checkCol.HeaderText = "Writable";
-                    dataGridView_data.Columns.Add(checkCol);
-                    dataGridView_data.Columns[1].SortMode = DataGridViewColumnSortMode.NotSortable;
+                        DataGridViewCheckBoxColumn checkCol = new DataGridViewCheckBoxColumn();
+                        checkCol.Name = "check";
+                        checkCol.HeaderText = "Writable";
+                        dataGridView_data.Columns.Add(checkCol);
+                        dataGridView_data.Columns[1].SortMode = DataGridViewColumnSortMode.NotSortable;
 
 
-                    dataGridView_data.Columns.Add("data", "Card data");
-                    dataGridView_data.Columns[2].SortMode = DataGridViewColumnSortMode.NotSortable;
+                        dataGridView_data.Columns.Add("data", "Card data");
+                        dataGridView_data.Columns[2].SortMode = DataGridViewColumnSortMode.NotSortable;
 
-                    dataGridView_data.Columns.Add("keyA", "KEY A");
-                    dataGridView_data.Columns[3].SortMode = DataGridViewColumnSortMode.NotSortable;
-                    dataGridView_data.Columns.Add("keyB", "KEY B");
-                    dataGridView_data.Columns[4].SortMode = DataGridViewColumnSortMode.NotSortable;
-
+                        dataGridView_data.Columns.Add("keyA", "KEY A");
+                        dataGridView_data.Columns[3].SortMode = DataGridViewColumnSortMode.NotSortable;
+                        dataGridView_data.Columns.Add("keyB", "KEY B");
+                        dataGridView_data.Columns[4].SortMode = DataGridViewColumnSortMode.NotSortable;
+                    });
                     if (t == MFRC522.PICC_Type.PICC_TYPE_MIFARE_MINI) pageNum = 5 * 4; //Mini
                     else if (t == MFRC522.PICC_Type.PICC_TYPE_MIFARE_1K) pageNum = 16 * 4; //1K
                     else if (t == MFRC522.PICC_Type.PICC_TYPE_MIFARE_4K) pageNum = 40 * 4; //4K
@@ -434,6 +456,7 @@ namespace RFID_Reader
                             this.Refresh();
                         });
                     }
+                    byte p = 0;
                     for (byte b = 0; b < pageNum; b++)
                     {
                         int k = 0;
@@ -451,37 +474,57 @@ namespace RFID_Reader
                             }
                         } while (data[0] == null && k < useKeys.Length);
                         cardData.AddRange(data);
-                        dataGridView_data.Rows.Add();
-                        dataGridView_data.Rows[dataGridView_data.Rows.Count - 1].Cells[0].Value = b.ToString("D3");
-                        dataGridView_data.Rows[dataGridView_data.Rows.Count - 1].Cells[0].ReadOnly = true;
-                        dataGridView_data.Rows[dataGridView_data.Rows.Count - 1].Cells[1].Value = false;
-                        dataGridView_data.Rows[dataGridView_data.Rows.Count - 1].Cells[2].Value = Accessory.ConvertByteArrayToHex(data[0]);
-                        dataGridView_data.Rows[dataGridView_data.Rows.Count - 1].Cells[2].ReadOnly = true;
-                        dataGridView_data.Rows[dataGridView_data.Rows.Count - 1].Cells[3].ReadOnly = true;
-                        dataGridView_data.Rows[dataGridView_data.Rows.Count - 1].Cells[4].ReadOnly = true;
-                        if (data[0] != null)
+
+                        this.Invoke((MethodInvoker)delegate
                         {
-                            if (stage) dataGridView_data.Rows[dataGridView_data.Rows.Count - 1].Cells[4].Value = Accessory.ConvertByteArrayToHex(useKeys[k - 1]);
-                            else dataGridView_data.Rows[dataGridView_data.Rows.Count - 1].Cells[3].Value = Accessory.ConvertByteArrayToHex(useKeys[k - 1]);
-                            raiseKey(ref useKeys, k - 1);
-                        }
-                        this.Refresh();
+                            dataGridView_data.Rows.Add();
+                            dataGridView_data.Rows[dataGridView_data.Rows.Count - 1].Cells[0].Value = b.ToString("D3");
+                            dataGridView_data.Rows[dataGridView_data.Rows.Count - 1].Cells[0].ReadOnly = true;
+                            dataGridView_data.Rows[dataGridView_data.Rows.Count - 1].Cells[1].Value = false;
+                            p++;
+                            if (p >= 4)
+                            {
+                                dataGridView_data.Rows[dataGridView_data.Rows.Count - 1].Cells[1].Style.BackColor = Color.Red;
+                                p = 0;
+                            }
+
+                            dataGridView_data.Rows[dataGridView_data.Rows.Count - 1].Cells[2].Value = Accessory.ConvertByteArrayToHex(data[0]);
+                            dataGridView_data.Rows[dataGridView_data.Rows.Count - 1].Cells[2].ReadOnly = true;
+                            dataGridView_data.Rows[dataGridView_data.Rows.Count - 1].Cells[3].ReadOnly = true;
+                            dataGridView_data.Rows[dataGridView_data.Rows.Count - 1].Cells[4].ReadOnly = true;
+                            if (data[0] != null)
+                            {
+                                if (stage) dataGridView_data.Rows[dataGridView_data.Rows.Count - 1].Cells[4].Value = Accessory.ConvertByteArrayToHex(useKeys[k - 1]);
+                                else dataGridView_data.Rows[dataGridView_data.Rows.Count - 1].Cells[3].Value = Accessory.ConvertByteArrayToHex(useKeys[k - 1]);
+                                raiseKey(ref useKeys, k - 1);
+                            }
+                        });
                     }
                 }
             }
             else
             {
-                //textBox_tagEdit0.Text = "Can't find tag";
-                dataGridView_data.Rows.Clear();
-                dataGridView_data.Columns.Clear();
-                dataGridView_data.Columns.Add("num", "");
-                dataGridView_data.Columns[0].SortMode = DataGridViewColumnSortMode.NotSortable;
-                dataGridView_data.Rows.Add();
-                dataGridView_data.Rows[dataGridView_data.Rows.Count - 1].Cells[0].Value = "Can't find tag";
+                this.Invoke((MethodInvoker)delegate
+                {
+                    dataGridView_data.Rows.Clear();
+                    dataGridView_data.Columns.Clear();
+                    dataGridView_data.Columns.Add("num", "");
+                    dataGridView_data.Columns[0].SortMode = DataGridViewColumnSortMode.NotSortable;
+                    dataGridView_data.Rows.Add();
+                    dataGridView_data.Rows[dataGridView_data.Rows.Count - 1].Cells[0].Value = "Can't find tag";
+                });
             }
 
-            _aTimer.Enabled = true;
+            this.Invoke((MethodInvoker)delegate
+            {
+                button_start.Enabled = true;
+                button_hardReset.Enabled = true;
+                button_read.Enabled = true;
+                button_write.Enabled = true;
+                button_clear.Enabled = true;
+            });
             mutexObj.Release();
+            _aTimer.Enabled = true;
         }
 
         private void button_write_Click(object sender, EventArgs e)
