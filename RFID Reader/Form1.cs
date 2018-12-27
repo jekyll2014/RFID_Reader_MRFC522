@@ -21,6 +21,7 @@ namespace RFID_Reader
         private byte[] _defaultKeyA = new byte[] { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
         private byte[] _defaultKeyB = null;
         private static Semaphore mutexObj = new Semaphore(1, 2);
+        private byte cancelFlag = 0;
 
         private byte[][] _defaultKeys = new byte[][]
 {
@@ -39,6 +40,10 @@ namespace RFID_Reader
             new byte[6]{0xa0, 0x47, 0x8c, 0xc3, 0x90, 0x91}, // a0 47 8c c3 90 91
             new byte[6]{0x53, 0x3c, 0xb6, 0xc7, 0x23, 0xf6}, // 53 3c b6 c7 23 f6
             new byte[6]{0x8f, 0xd0, 0xa4, 0xf2, 0x56, 0xe9}, // 8f d0 a4 f2 56 e9
+            new byte[6]{0xd3, 0xf7, 0xd3, 0xf7, 0xd3, 0xf7},
+            new byte[6]{0xb5, 0xff, 0x67, 0xcb, 0xa9, 0x51},
+            new byte[6]{0x67, 0xa6, 0x15, 0xc4, 0x9e, 0xa6},
+
 };
 
         public Form1()
@@ -339,9 +344,13 @@ namespace RFID_Reader
 
         private void button_read_Click(object sender, EventArgs e)
         {
+            if (cancelFlag > 0)
+            {
+                cancelFlag++;
+                return;
+            }
             if (!mutexObj.WaitOne(10)) return;
             _aTimer.Enabled = false;
-
             this.Invoke((MethodInvoker)delegate
             {
                 label_tagFound.BackColor = Color.Yellow;
@@ -356,11 +365,12 @@ namespace RFID_Reader
 
         private void getDataFromRFID()
         {
+            cancelFlag = 1;
             this.Invoke((MethodInvoker)delegate
             {
                 button_start.Enabled = false;
                 button_hardReset.Enabled = false;
-                button_read.Enabled = false;
+                button_read.Text = "Cancel read";
                 button_write.Enabled = false;
                 button_clear.Enabled = false;
             });
@@ -465,6 +475,11 @@ namespace RFID_Reader
                                 stage = true;
                                 k = 0;
                             }
+                            if (cancelFlag > 1)
+                            {
+                                cancelFlag = 0;
+                                break;
+                            }
                         } while (data[0] == null && k < useKeys.Length);
                         cardData.AddRange(data);
 
@@ -492,6 +507,7 @@ namespace RFID_Reader
                                 raiseKey(ref useKeys, k - 1);
                             }
                         });
+                        if (cancelFlag == 0) break;
                     }
                 }
             }
@@ -512,24 +528,35 @@ namespace RFID_Reader
             {
                 button_start.Enabled = true;
                 button_hardReset.Enabled = true;
-                button_read.Enabled = true;
+                button_read.Text = "Read tag";
                 button_write.Enabled = true;
                 button_clear.Enabled = true;
             });
+            cancelFlag = 0;
             _aTimer.Enabled = true;
             mutexObj.Release();
         }
 
         private void button_write_Click(object sender, EventArgs e)
         {
+            if (cancelFlag > 0)
+            {
+                cancelFlag++;
+                return;
+            }
+
             if (!mutexObj.WaitOne(10)) return;
             _aTimer.Enabled = false;
-            //Accessory.Delay_ms(_tmr_delay + 100);
-
+            cancelFlag = 1;
             this.Invoke((MethodInvoker)delegate
             {
                 label_tagFound.BackColor = Color.Yellow;
                 label_tagFound.Text = "Writing tag";
+                button_start.Enabled = false;
+                button_hardReset.Enabled = false;
+                button_read.Enabled = false;
+                button_write.Text = "Cancel write";
+                button_clear.Enabled = false;
                 this.Refresh();
             });
             checkBox_dataHex.Checked = true;
@@ -548,41 +575,24 @@ namespace RFID_Reader
                     }
                     else dataGridView_data.Rows[i].Cells[2].Style.BackColor = Color.Red;
                 }
-                /*Control[] controls = Controls.Find("checkBox_page" + i.ToString(), true);
-                if (controls.Length > 0)
+                if (cancelFlag > 1)
                 {
-                    CheckBox cBox = controls[0] as CheckBox;
-
-                    if (cBox.Checked)
-                    {
-                        controls = Controls.Find("textBox_tagEdit" + i.ToString(), true);
-                        if (controls.Length > 0)
-                        {
-                            TextBox tBox = controls[0] as TextBox;
-                            byte[] data = Accessory.ConvertHexToByteArray(tBox.Text);
-                            if (data.Length == 16)
-                            {
-                                byte[] uid = null;
-                                uid = RFID_hunt();
-                                if (uid != null)
-                                {
-                                    bool status = RFID_write(uid, _defaultKeyA, _defaultKeyB, i, data);
-                                    if (status) tBox.BackColor = Color.Lime;
-                                    else tBox.BackColor = Color.Red;
-                                }
-                                else tBox.BackColor = Color.Red;
-                            }
-                            else tBox.BackColor = Color.Red;
-                        }
-                    }
-                }*/
+                    cancelFlag = 0;
+                    break;
+                }
             }
-            _aTimer.Enabled = true;
+            cancelFlag = 0;
             this.Invoke((MethodInvoker)delegate
             {
                 label_tagFound.BackColor = Color.Green;
                 label_tagFound.Text = "Tag written";
+                button_start.Enabled = false;
+                button_hardReset.Enabled = false;
+                button_read.Enabled = false;
+                button_write.Text = "Write tag";
+                button_clear.Enabled = false;
             });
+            _aTimer.Enabled = true;
             mutexObj.Release();
         }
 
