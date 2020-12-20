@@ -1,4 +1,4 @@
-﻿namespace RFID_Reader
+﻿namespace RFID_Reader_MRFC522
 {
     partial class Form1
     {
